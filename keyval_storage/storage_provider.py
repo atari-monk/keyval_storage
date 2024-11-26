@@ -1,12 +1,12 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
 from cli_logger.logger import setup_logger
-from cli_tool.config import LOGGER_CONFIG    
 from pytoolbox.folder import ensure_folder_exists
-from keyval_storage.constants import APP_DATA_FOLDER, KEY_VALUE_STORAGE_PATH_KEY
+from keyval_storage.constants import APP_DATA_FOLDER_KEY, KEY_VALUE_STORAGE_PATH_KEY
 from keyval_storage.key_value_storage import KeyValueStorage
+from keyval_storage.config import logger_config
 
-logger = setup_logger(__name__, LOGGER_CONFIG)
+logger = setup_logger(__name__, logger_config)
 
 @dataclass
 class StorageConfig:
@@ -29,7 +29,7 @@ class StorageProvider:
                 logger.error(f"Error when loading storage file - {storage_path}: Storage failed data check.")
                 return None   
         except Exception as e:
-            logger.error(f"Error when loading storage file - {storage_path}: {e}")
+            logger.exception(f"Error when loading storage file - {storage_path}: {e}")
             return None
 
     def save_storage(self) -> tuple[KeyValueStorage, str]:
@@ -41,10 +41,9 @@ class StorageProvider:
 
             storage = KeyValueStorage(storage_file_path)
             
-            storage.set(APP_DATA_FOLDER, data_folder_path)
+            storage.set(APP_DATA_FOLDER_KEY, data_folder_path)
             storage.set(KEY_VALUE_STORAGE_PATH_KEY, storage_file_path)
 
             return storage, storage_file_path
         except Exception as e:
-            logger.error(f"Error when saving storage file: {e}")
-   
+            logger.exception(f"Error when saving storage file: {e}")
