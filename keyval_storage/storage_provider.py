@@ -4,7 +4,7 @@ from cli_logger.logger import setup_logger
 from cli_tool.config import LOGGER_CONFIG    
 from pytoolbox.folder import ensure_folder_exists
 from keyval_storage.constants import APP_DATA_FOLDER, KEY_VALUE_STORAGE_PATH_KEY
-from keyval_storage.storage import KeyValueStorage
+from keyval_storage.key_value_storage import KeyValueStorage
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 

@@ -1,5 +1,5 @@
 import argparse
-from keyval_storage.storage import KeyValueStorage
+from keyval_storage.key_value_storage import KeyValueStorage
 
 def main():
     parser = argparse.ArgumentParser(description="Key-Value JSON Storage CLI")

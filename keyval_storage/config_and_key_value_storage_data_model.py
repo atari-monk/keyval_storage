@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from keyval_storage.constants import APP_DATA_FOLDER, KEY_VALUE_STORAGE_PATH_KEY
 from keyval_storage.config_provider import ConfigProvider, PathData
-from keyval_storage.storage import KeyValueStorage
+from keyval_storage.key_value_storage import KeyValueStorage
 from keyval_storage.storage_provider import StorageConfig, StorageProvider
 
 class ConfigAndKeyValueStorageDataModel:

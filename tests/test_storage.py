@@ -1,6 +1,6 @@
 import os
 import pytest
-from keyval_storage.storage import KeyValueStorage
+from keyval_storage.key_value_storage import KeyValueStorage
 
 @pytest.fixture
 def temp_file(tmpdir):
