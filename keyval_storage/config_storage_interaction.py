@@ -1,18 +1,23 @@
 import os
+from pathlib import Path
+from keyval_storage.constants import APP_DATA_FOLDER, KEY_VALUE_STORAGE_PATH_KEY
 from keyval_storage.config_provider import ConfigProvider, PathData
+from keyval_storage.storage import KeyValueStorage
 from keyval_storage.storage_provider import StorageConfig, StorageProvider
 
-STORAGE_PATH_KEY = 'storage_path'
+class ConfigAndKeyValueStorageDataModel:
+    def __init__(self, appName: str):
+        self._appName = appName
+        self._configProvider = ConfigProvider(PathData(os.path.join('C:\\configs', appName), f'{appName}_config.json'))
+        self._storageProvider = StorageProvider(StorageConfig('storage.json'))
 
-class ConfigStorageInteraction:
-    def __init__(self, appDataFolder: str):
-        self._configProvider = ConfigProvider(PathData(os.path.join('C:\\', appDataFolder), 'config.json'))
-        self._storageProvider = StorageProvider(StorageConfig(STORAGE_PATH_KEY, 'storage.json'))
+    def getKeyValueStorage_NewFileAndConfig(self) -> KeyValueStorage:
+        storage, storageFilePath = self._storageProvider.save_storage()
+        self._configProvider.save_file({APP_DATA_FOLDER: Path(storageFilePath).parent})
+        self._configProvider.save_file({KEY_VALUE_STORAGE_PATH_KEY: storageFilePath})
+        return storage
 
-    def interact(self):
+    def getKeyValueStorage_LoadUsingConfig(self) -> KeyValueStorage | None:
         config = self._configProvider.load_file()
         if config:
-            _ = self._storageProvider.load_storage(config[STORAGE_PATH_KEY])
-        else:
-            _, storageFilePath = self._storageProvider.save_storage()
-            self._configProvider.save_file({STORAGE_PATH_KEY: storageFilePath})
+            return self._storageProvider.load_storage(config[KEY_VALUE_STORAGE_PATH_KEY])

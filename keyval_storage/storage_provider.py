@@ -3,26 +3,25 @@ import os
 from cli_logger.logger import setup_logger
 from cli_tool.config import LOGGER_CONFIG    
 from pytoolbox.folder import ensure_folder_exists
+from keyval_storage.constants import APP_DATA_FOLDER, KEY_VALUE_STORAGE_PATH_KEY
 from keyval_storage.storage import KeyValueStorage
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 
 @dataclass
 class StorageConfig:
-    storage_path_key: str
     storage_file_name: str
 
 class StorageProvider:
     def __init__(self, config: StorageConfig):
         self._config = config
-        self._storage_path_key = config.storage_path_key
         self._storage_file_name = config.storage_file_name
 
     def load_storage(self, storage_path: str) -> KeyValueStorage | None:
         try:
             storage = KeyValueStorage(storage_path)
 
-            storage_path_from_storage = storage.get(self._storage_path_key)
+            storage_path_from_storage = storage.get(KEY_VALUE_STORAGE_PATH_KEY)
             
             if storage_path == storage_path_from_storage:
                 return storage
@@ -42,7 +41,8 @@ class StorageProvider:
 
             storage = KeyValueStorage(storage_file_path)
             
-            storage.set(self._storage_path_key, storage_file_path)
+            storage.set(APP_DATA_FOLDER, data_folder_path)
+            storage.set(KEY_VALUE_STORAGE_PATH_KEY, storage_file_path)
 
             return storage, storage_file_path
         except Exception as e:
