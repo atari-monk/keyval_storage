@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="atari_monk_keyval_storage",
-    version="0.1.0",
+    name="atari-monk-keyval-storage",
+    version="0.1.1",
     packages=find_packages(),
-    install_requires=["atari_monk_pytoolbox", "atari_monk_cli_logger"],
+    install_requires=["atari-monk-pytoolbox", "atari-monk-cli-logger"],
     entry_points={
         "console_scripts": [
             "keyval_cli=keyval_storage.cli:main"
