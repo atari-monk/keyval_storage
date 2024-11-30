@@ -1,5 +1,6 @@
 .pytest_cache
-keyval_storage.egg-info
+atari_monk_keyval_storage.egg-info
 build
 __pycache__
 logs
+dist
